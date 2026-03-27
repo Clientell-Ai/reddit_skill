@@ -23,6 +23,7 @@ AI_PATTERNS = [
     (r"(?i)that being said,", "Contains 'That being said' — AI transition"),
     (r"(?i)let me break this down", "Contains 'Let me break this down' — AI structure signal"),
     (r"(?i)here'?s the thing:", "Contains 'Here's the thing:' — overused AI opener"),
+    (r"\u2014", "Contains em dash (\u2014) — Reddit users type '--' or '-', not em dashes. Replace or restructure."),
 ]
 
 # --- Product / promotion patterns ---
@@ -43,9 +44,34 @@ QUALITY_CHECKS = [
     # Too many bullet points = AI feel
     ("bullet_heavy", "Draft is bullet-heavy — Reddit comments are conversational. Consider rewriting some bullets as prose."),
     # Too long
-    ("too_long", "Draft exceeds 500 words — consider trimming for Reddit readability."),
+    ("too_long", "Draft exceeds 110 words — most good Reddit comments land around 35-90 words. Trim it down."),
     # Too short (might lack substance)
     ("too_short", "Draft is under 30 words — may lack enough substance to be valuable."),
+    # Too many sentences
+    ("too_many_sentences", "Draft has more than 5 sentences — likely drifting into mini-essay territory."),
+    # No reply hook
+    ("no_hook", "Draft has no clear reply hook — add a short question, contrast, or challenge people can answer."),
+    # Generic / low-specificity
+    ("too_generic", "Draft reads generic — add a firsthand detail, concrete gotcha, or sharper point of view."),
+]
+
+GENERIC_PATTERNS = [
+    (r"(?i)\bit depends\b", "Contains 'it depends' — name the actual deciding factor instead of stopping there."),
+    (r"(?i)\byou may want to consider\b", "Contains generic consultant phrasing."),
+    (r"(?i)\bit sounds like\b", "Contains generic summary phrasing — often weakens the opening."),
+    (r"(?i)\bmake sure you\b", "Contains generic advice phrasing — needs a more specific angle."),
+    (r"(?i)\bthe best practice is\b", "Contains generic best-practice phrasing without context."),
+]
+
+FIRSTHAND_MARKERS = [
+    "i", "i've", "we", "we've", "our", "us", "worked for us", "in our org",
+    "learned the hard way", "in production", "when we tried", "i've seen",
+]
+
+SPECIFICITY_MARKERS = [
+    "flow", "flows", "apex", "lwc", "trigger", "report", "dashboard", "permission",
+    "profile", "validation rule", "record type", "data cloud", "agentforce",
+    "governor", "integration", "soql", "mulesoft", "sandbox", "prod",
 ]
 
 
@@ -78,10 +104,28 @@ def validate_draft(text):
         flags.append(("WARNING", QUALITY_CHECKS[0][1]))
 
     word_count = len(text.split())
-    if word_count > 500:
-        flags.append(("INFO", QUALITY_CHECKS[1][1]))
+    if word_count > 110:
+        flags.append(("WARNING", QUALITY_CHECKS[1][1]))
     if word_count < 30:
         flags.append(("WARNING", QUALITY_CHECKS[2][1]))
+
+    sentence_count = len([s for s in re.split(r"[.!?]+", text) if s.strip()])
+    if sentence_count > 5:
+        flags.append(("WARNING", QUALITY_CHECKS[3][1]))
+
+    has_hook = "?" in text or bool(re.search(r"(?i)\b(anyone else|curious if|what are you seeing|how are you handling|has anyone|am i the only one)\b", text))
+    if word_count >= 35 and not has_hook:
+        flags.append(("INFO", QUALITY_CHECKS[4][1]))
+
+    text_lower = text.lower()
+    has_firsthand = any(marker in text_lower for marker in FIRSTHAND_MARKERS)
+    has_specificity = any(marker in text_lower for marker in SPECIFICITY_MARKERS) or bool(re.search(r"\d", text)) or '"' in text or "'" in text
+    if word_count >= 35 and (not has_firsthand or not has_specificity):
+        flags.append(("INFO", QUALITY_CHECKS[5][1]))
+
+    for pattern, message in GENERIC_PATTERNS:
+        if re.search(pattern, text):
+            flags.append(("INFO", message))
 
     # Check for cert dump language
     if re.search(r"(?i)\b(dump|brain\s*dump|cert\s*dump|exam\s*dump)\b", text):

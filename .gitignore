@@ -1,0 +1,4 @@
+.sfdx/
+__pycache__/
+private_account/
+*.pyc

@@ -16,6 +16,10 @@ description: >
 
 Drafts high-quality Reddit comments for four Salesforce expert personas. **This is a drafting assistant, not an autonomous poster.** Every output is a draft for human review. The human operator rewrites the final version in their own voice and posts it manually.
 
+**Primary objective:** draft comments that earn replies because they feel lived-in, specific, and slightly opinionated, not just correct.
+
+**Failure mode to avoid:** safe mini-essays that sound competent but give nobody a reason to answer back.
+
 > **The one rule that overrides everything:** If you wouldn't say it out loud at Dreamforce, don't draft it for Reddit.
 
 ---
@@ -49,6 +53,7 @@ Generate the draft following:
 3. The subreddit-specific constraints (see below)
 4. The reply framework that best matches the thread type
 5. Account warm-up restrictions if applicable (see below)
+6. The comment shape and engagement rules below
 
 ### Step 5 — Run Validation
 Execute `scripts/validate.py` on the draft text. If it flags anything, revise and re-validate before presenting.
@@ -82,6 +87,8 @@ Drafts must not contain patterns that read as AI-generated:
 - No "As a [role], I can say that..." preambles
 - No "Absolutely!" or "Definitely!" affirmations
 - No numbered lists where a conversational flow would be more natural
+- No over-explaining when 3-5 punchy sentences would do
+- No consultant-speak like "it depends" without the actual deciding factor
 
 ### Subreddit Rule Compliance
 These are hard bans. Violation = account termination on the platform.
@@ -123,6 +130,47 @@ The 20% is NEVER:
 - A link drop
 - A setup for future promotion
 
+## Comment Shape
+
+Default to Reddit-native comments, not polished writeups:
+
+- 2-5 sentences by default
+- 35-110 words most of the time
+- One main idea per comment
+- Open with the sharpest useful observation, not setup
+- Use short paragraphs when a block of text gets hard to scan
+- If the thread truly needs depth, stay readable and earn the extra length with specifics
+
+## Engagement Rules
+
+Every comment must include at least **one** of these:
+
+- A firsthand observation from real work
+- A non-obvious gotcha or failure mode
+- A mild but defensible opinion
+- A tension or tradeoff people will want to argue about
+- A low-friction question people can answer from experience
+
+Strong comments usually follow this shape:
+
+1. **Hook** — one sharp reaction, pain point, or thesis
+2. **Value** — one concrete detail, workaround, or insight
+3. **Reply magnet** — a short question, contrast, or challenge that invites people in
+
+When possible, prefer:
+
+- "this is where it usually breaks"
+- "the part nobody mentions is..."
+- "what worked for us was..."
+- "technically yes, but..."
+
+Avoid comments that merely:
+
+- Restate the OP
+- Read like documentation
+- Ask a clarifying question without adding any value
+- Give a perfectly complete answer with nothing to respond to
+
 ---
 
 ## Reply Framework Selection
@@ -148,7 +196,7 @@ Draft nothing if:
 - Answering requires mentioning tools in a sub that bans it
 - Thread is from an obvious vendor account
 - Your persona's expertise is a stretch for the topic
-- Thread is brand new with zero other comments (let it develop first)
+- Thread is brand new with zero other comments **and** you do not have a strong, firsthand angle
 - Thread where people are genuinely happy and don't need your critique (critic persona)
 - "Do my homework" requests with zero effort shown (dev persona)
 
@@ -227,6 +275,7 @@ The day-by-day schedule above covers the first 7 days. Here's the longer-term pl
 - If karma is strong and engagement is consistent, the account is fully warmed
 - Maintain all frequency caps and safety guardrails indefinitely — these never expire
 - Reassess monthly: is the persona still believable? Are comments getting upvotes? Any mod friction?
+- Prefer comments that can start threads, not just close them
 
 ### Warm-Up Health Checks
 

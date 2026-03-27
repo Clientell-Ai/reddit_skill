@@ -1,0 +1,65 @@
+  Searching keywords...
+  Polling subreddits...
+=== Reddit Monitor -- 2026-03-27 06:05 UTC ===
+Found 12 posts matching keywords
+
+ 1. [r/ExperiencedDevs] score=50 comments=94 age=6.8h
+    How do you know technical debt is piling up?
+    Personas: architect, dev | Keywords: technical debt | Rank: 340.0
+    https://reddit.com/r/ExperiencedDevs/comments/1s4n8i4/how_do_you_know_technical_debt_is_piling_up/
+
+ 2. [r/AI_Agents] score=30 comments=6 age=1.7h
+    90% of AI agent projects I get hired for don't need agents at all. Here's what businesses actua
+    Personas: critic, dev | Keywords: ai agent | Rank: 68.8
+    https://reddit.com/r/AI_Agents/comments/1s4u5v4/90_of_ai_agent_projects_i_get_hired_for_dont_need/
+
+ 3. [r/CRM] score=5 comments=11 age=2.7h
+    Our nonprofit crm is paypal and google sheets dont judge me
+    Personas: admin, critic | Keywords: crm | Rank: 66.2
+    https://reddit.com/r/CRM/comments/1s4sz20/our_nonprofit_crm_is_paypal_and_google_sheets/
+
+ 4. [r/salesforce] score=1 comments=13 age=5.9h
+    Filter joined report with current user State
+    Personas: admin | Keywords: salesforce | Rank: 60.2
+    https://reddit.com/r/salesforce/comments/1s4ok98/filter_joined_report_with_current_user_state/
+
+ 5. [r/salesforce] score=3 comments=1 age=2.8h
+    EverClean style email verification but with a SalesForce app connection
+    Personas: admin, architect, critic, dev | Keywords: salesforce, crm | Rank: 39.0
+    https://reddit.com/r/salesforce/comments/1s4sskz/everclean_style_email_verification_but_with_a/
+
+ 6. [r/SalesforceDeveloper] score=1 comments=1 age=1.8h
+    u can use scheduled flows for mass updates instead of dataloader
+    Personas: dev | Keywords: salesforcedeveloper | Rank: 34.5
+    https://reddit.com/r/SalesforceDeveloper/comments/1s4u0m9/u_can_use_scheduled_flows_for_mass_updates/
+
+ 7. [r/AI_Agents] score=2 comments=4 age=3.3h
+    Cannot Enroll to IBM Skill Network AI Agent Projects
+    Personas: critic, dev | Keywords: ai agent | Rank: 30.8
+    https://reddit.com/r/AI_Agents/comments/1s4s4bg/cannot_enroll_to_ibm_skill_network_ai_agent/
+
+ 8. [r/AI_Agents] score=0 comments=3 age=1.4h
+    Why do most website chatbots fail at actually helping users?
+    Personas: critic, dev | Keywords: ai agent | Rank: 30.5
+    https://reddit.com/r/AI_Agents/comments/1s4ufyb/why_do_most_website_chatbots_fail_at_actually/
+
+ 9. [r/SaaS] score=1 comments=0 age=0.1h
+    Building a social analytics SaaS, Instaloader is dead for my use case
+    Personas: admin, dev, architect, critic | Keywords: saas, instaloader is dead | Rank: 25.8
+    https://reddit.com/r/SaaS/comments/1s4vvwa/building_a_social_analytics_saas_instaloader_is/
+
+10. [r/SaaS] score=1 comments=0 age=0.1h
+    AI slide generator integration with our existing workflows
+    Personas: admin, critic | Keywords: crm | Rank: 25.8
+    https://reddit.com/r/SaaS/comments/1s4vvph/ai_slide_generator_integration_with_our_existing/
+
+11. [r/AI_Agents] score=1 comments=1 age=1.7h
+    We benchmarked Mobile AI Agents across 65-real world tasks. Here is what we found
+    Personas: critic, dev | Keywords: ai agent | Rank: 24.8
+    https://reddit.com/r/AI_Agents/comments/1s4u3xt/we_benchmarked_mobile_ai_agents_across_65real/
+
+12. [r/salesforce] score=3 comments=1 age=7.3h
+    Experience site - cookie consent
+    Personas: admin, architect, critic, dev | Keywords: salesforce | Rank: 22.8
+    https://reddit.com/r/salesforce/comments/1s4mgvs/experience_site_cookie_consent/
+
