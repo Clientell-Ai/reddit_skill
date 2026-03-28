@@ -1,7 +1,7 @@
 # Reddit Accounts — Quick Reference
 
 ## Composio Config
-- **API Key:** `ak_8E4M5xorY8qgqNN7W5u-`
+- **API Key:** `$COMPOSIO_API_KEY` (set as env var)
 - **User ID:** `pg-test-af819d82-c40c-431b-a51c-aff077f13733`
 - **Auth Config:** `ac_0LOTHeKiftNv` (OAuth2, ENABLED)
 - **Toolkit Version:** `20260312_00`

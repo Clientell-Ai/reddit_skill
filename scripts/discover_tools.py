@@ -3,6 +3,7 @@
 
 import asyncio
 import json
+import os
 import sys
 
 
@@ -12,7 +13,7 @@ async def discover_tools():
 
     base = "https://backend.composio.dev/tool_router/trs_0xJb8Y4nexHE/mcp"
     headers = {
-        "x-api-key": "ak_8E4M5xorY8qgqNN7W5u-",
+        "x-api-key": os.environ.get("COMPOSIO_API_KEY", ""),
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
     }

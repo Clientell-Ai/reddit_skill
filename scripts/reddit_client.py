@@ -5,6 +5,7 @@ Uses composio v1 SDK to execute Reddit tools via connected accounts.
 """
 
 import json
+import os
 import re
 import sys
 from datetime import datetime, timezone
@@ -12,8 +13,8 @@ from pathlib import Path
 from typing import Optional
 
 # --- Config ---
-API_KEY = "ak_8E4M5xorY8qgqNN7W5u-"
-USER_ID = "pg-test-af819d82-c40c-431b-a51c-aff077f13733"
+API_KEY = os.environ.get("COMPOSIO_API_KEY", "")
+USER_ID = os.environ.get("COMPOSIO_USER_ID", "pg-test-af819d82-c40c-431b-a51c-aff077f13733")
 TOOLKIT_VERSION = "20260312_00"
 ROOT_DIR = Path(__file__).resolve().parents[1]
 COMMENT_HISTORY_PATH = ROOT_DIR / "data" / "comment_history.json"

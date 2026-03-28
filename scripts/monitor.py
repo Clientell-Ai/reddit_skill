@@ -8,6 +8,7 @@ Usage:
   python scripts/monitor.py              # Run once, print results
   python scripts/monitor.py --json       # Output JSON for piping
   python scripts/monitor.py --watch      # Run every 30 min continuously
+  python scripts/monitor.py --sf-only    # Strict filter: only Salesforce-related posts
 """
 
 import json
@@ -203,7 +204,25 @@ def _suggest_personas(matched_keywords: list, subreddit: str) -> list:
 # Core monitor
 # ---------------------------------------------------------------------------
 
-def scan_reddit() -> list:
+SF_ONLY_PATTERNS = [
+    re.compile(r"\bsalesforce\b", re.I),
+    re.compile(r"\bsfdc\b", re.I),
+]
+
+
+def _passes_sf_only_filter(subreddit: str, title: str, selftext: str) -> bool:
+    """When --sf-only is active, only include posts that are truly about Salesforce.
+
+    - Posts in SF-native subs always pass.
+    - Posts in other subs must mention 'salesforce' or 'sfdc' in title or body.
+    """
+    if subreddit.lower() in SF_NATIVE_SUBS:
+        return True
+    text = f"{title} {selftext}"
+    return any(p.search(text) for p in SF_ONLY_PATTERNS)
+
+
+def scan_reddit(sf_only: bool = False) -> list:
     """Search Reddit for keywords + poll subreddits. Return ranked post list."""
     from scripts.reddit_client import RedditClient
 
@@ -229,6 +248,10 @@ def scan_reddit() -> list:
         subreddit = data.get("subreddit", "")
         title = data.get("title", "")
         selftext = data.get("selftext", "") or ""
+
+        # --sf-only: strict filter — non-SF subs must mention salesforce/sfdc
+        if sf_only and not _passes_sf_only_filter(subreddit, title, selftext):
+            return
 
         # For non-SF subs, require keyword match in title/body
         if subreddit.lower() not in SF_NATIVE_SUBS:
@@ -348,6 +371,7 @@ def format_results(posts: list, json_output: bool = False) -> str:
 def main():
     json_output = "--json" in sys.argv
     watch_mode = "--watch" in sys.argv
+    sf_only = "--sf-only" in sys.argv
 
     if watch_mode:
         print(f"Starting Reddit monitor (polling every {POLL_INTERVAL_SECONDS // 60} min)...")
@@ -357,7 +381,7 @@ def main():
 
         while True:
             try:
-                posts = scan_reddit()
+                posts = scan_reddit(sf_only=sf_only)
                 output = format_results(posts, json_output)
                 print(output)
 
@@ -389,7 +413,7 @@ def main():
                 print(f"  [ERROR] {e}", file=sys.stderr)
                 time.sleep(60)
     else:
-        posts = scan_reddit()
+        posts = scan_reddit(sf_only=sf_only)
         output = format_results(posts, json_output)
         print(output)
 
