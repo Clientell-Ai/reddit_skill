@@ -342,10 +342,13 @@ def cmd_check_replies():
                 c = item.get("data", item) if isinstance(item, dict) else {}
                 if c.get("parent_id") == target_name:
                     found.append({
+                        "reply_name": c.get("name", ""),
+                        "reply_id": c.get("id", ""),
                         "author": c.get("author", "?"),
                         "body": (c.get("body") or "")[:300],
                         "score": c.get("score", 0),
                         "created_utc": c.get("created_utc"),
+                        "permalink": c.get("permalink", ""),
                     })
                 # Check nested replies
                 replies_data = c.get("replies")
@@ -371,6 +374,7 @@ def cmd_check_replies():
             replies_found.append({
                 "persona": persona,
                 "post_id": post_id,
+                "subreddit": entry.get("subreddit", ""),
                 "our_comment": our_comment_name,
                 "our_text_preview": entry.get("text_preview", ""),
                 "replies": found,
