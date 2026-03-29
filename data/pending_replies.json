@@ -1,0 +1,104 @@
+{
+  "replies": [
+    {
+      "persona": "dev",
+      "post_id": "1s4an0q",
+      "our_comment": "t1_ocpyp8u",
+      "reply_name": "t1_ocq0kmc",
+      "reply_author": "zmug",
+      "reply_body": "Yeah definitely need to make a LWC template focused skill that the model loads everytime it tries to generate a template. It is just going to take a while to hone in small but extensive enough skill that covers most of the SLDS stuff. I will probably start with a skill that says never style anything",
+      "reply_score": 1,
+      "subreddit": "SalesforceDeveloper",
+      "permalink": "/r/SalesforceDeveloper/comments/1s4an0q/slds_and_llms/ocq0kmc/"
+    },
+    {
+      "persona": "dev",
+      "post_id": "1s4u5v4",
+      "our_comment": "t1_ocpzog2",
+      "reply_name": "t1_ocrxik7",
+      "reply_author": "rachel_rig",
+      "reply_body": "My dumb rule is: if you can write the next step before runtime, it's probably just automation. If it has to go find context, decide what to do with what it finds, and recover when the world looks different than expected, the agent stuff starts making sense.",
+      "reply_score": 6,
+      "subreddit": "AI_Agents",
+      "permalink": "/r/AI_Agents/comments/1s4u5v4/90_of_ai_agent_projects_i_get_hired_for_dont_need/ocrxik7/"
+    },
+    {
+      "persona": "dev",
+      "post_id": "1s4u5v4",
+      "our_comment": "t1_ocpzog2",
+      "reply_name": "t1_octik9c",
+      "reply_author": "timidtom",
+      "reply_body": "Don\u2019t see Agentforce mentioned a lot on here for good reason lol",
+      "reply_score": 1,
+      "subreddit": "AI_Agents",
+      "permalink": "/r/AI_Agents/comments/1s4u5v4/90_of_ai_agent_projects_i_get_hired_for_dont_need/octik9c/"
+    },
+    {
+      "persona": "dev",
+      "post_id": "1s4u0m9",
+      "our_comment": "t1_ocqz9xa",
+      "reply_name": "t1_ocspdnd",
+      "reply_author": "neilsarkr",
+      "reply_body": "Spot on about the governor limits. This definitely isn't the move for hundreds of thousands of records or heavy Apex triggers in the background. I used it for a simple field update on 5k records and it handled it fine, but you're 100% right that for anything high-stakes or high-volume, the visibilit",
+      "reply_score": 1,
+      "subreddit": "SalesforceDeveloper",
+      "permalink": "/r/SalesforceDeveloper/comments/1s4u0m9/u_can_use_scheduled_flows_for_mass_updates/ocspdnd/"
+    },
+    {
+      "persona": "critic",
+      "post_id": "1s4wbrx",
+      "our_comment": "t1_ocqzag6",
+      "reply_name": "t1_ocr3wvf",
+      "reply_author": "Distinct_Ad_479",
+      "reply_body": "the one automation that i built: inbound lead hits your form, enriched and segmented in under 3 seconds, personalised email sent automatically, and your sales rep gets a Slack message the exact moment that lead clicks a link or visits your pricing page. Not a daily digest. Not a dashboard to check. ",
+      "reply_score": 1,
+      "subreddit": "CRM",
+      "permalink": "/r/CRM/comments/1s4wbrx/built_a_selfhosted_crm_automation_system_because/ocr3wvf/"
+    },
+    {
+      "persona": "admin",
+      "post_id": "1s50pvz",
+      "our_comment": "t1_ocsbfd5",
+      "reply_name": "t1_oct6her",
+      "reply_author": "storm-shadow-24",
+      "reply_body": "Word/pdf anything would do",
+      "reply_score": 1,
+      "subreddit": "salesforce",
+      "permalink": "/r/salesforce/comments/1s50pvz/clm_draft_watermark/oct6her/"
+    },
+    {
+      "persona": "critic",
+      "post_id": "1s556t4",
+      "our_comment": "t1_ocsbh4q",
+      "reply_name": "t1_ocsph1h",
+      "reply_author": "EffectiveLet2117",
+      "reply_body": "I ended up switching to Tympi \nThere\u2019s no seat minimum and no overload of features\n\nIt\u2019s built by a freelancer for freelancers ",
+      "reply_score": -1,
+      "subreddit": "CRM",
+      "permalink": "/r/CRM/comments/1s556t4/overbuilt_tools_killed_my_workflow_as_a_freelancer/ocsph1h/"
+    },
+    {
+      "persona": "admin",
+      "post_id": "1s5vvvv",
+      "our_comment": "t1_ocxpwh9",
+      "reply_name": "t1_ocxs2wf",
+      "reply_author": "Gold-Efficiency-4308",
+      "reply_body": "Honesly, I am sending the same cv for any job requiring sf dev and sales/sevrice cloud.  \nThanks!",
+      "reply_score": 1,
+      "subreddit": "salesforce",
+      "permalink": "/r/salesforce/comments/1s5vvvv/can_you_please_evaluate_this_section_of_my_cv/ocxs2wf/"
+    },
+    {
+      "persona": "dev",
+      "post_id": "1s5xcsl",
+      "our_comment": "t1_ocxpx1p",
+      "reply_name": "t1_ocxsvom",
+      "reply_author": "Suspicious-Nerve-487",
+      "reply_body": "If OP is getting a result from query, the issue isn\u2019t FLS or OP would get an error",
+      "reply_score": 4,
+      "subreddit": "salesforce",
+      "permalink": "/r/salesforce/comments/1s5xcsl/salesforce_ui_shows_updated_field_value_but_soql/ocxsvom/"
+    }
+  ],
+  "checked_at": "2026-03-29T03:38:03Z"
+}

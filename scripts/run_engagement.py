@@ -296,10 +296,13 @@ def cmd_post(persona: str, post_id: str, comment_text: str):
 # ---------------------------------------------------------------------------
 
 def cmd_check_replies():
-    """Check for replies on previous comments from comment_history.json."""
-    _ensure_composio()
+    """Check for replies on previous comments using Reddit's JSON API.
 
-    from scripts.reddit_client import RedditClient
+    The Composio API does not return nested replies, so we hit Reddit's
+    public JSON endpoint directly: /comments/{post_id}/_/{comment_id}.json
+    which returns our comment with its full reply tree.
+    """
+    import time as _time
 
     history = _load_comment_history()
     comments = history.get("comments", [])
@@ -308,77 +311,58 @@ def cmd_check_replies():
         print(json.dumps({"replies": [], "message": "No comment history found."}))
         return
 
+    our_usernames = {"Cool_Intention_161", "Candid_Difficulty236", "Sharp_Animal_2708", "SandboxIsProduction"}
     replies_found = []
-    rc_cache = {}
 
     for entry in comments:
         persona = entry.get("persona")
         post_id = entry.get("post_id")
-        our_comment_name = entry.get("comment_name")  # e.g. t1_xxx
+        comment_id = entry.get("comment_id")
 
-        if not persona or not post_id or not our_comment_name:
+        if not persona or not post_id or not comment_id:
             continue
 
-        if persona not in rc_cache:
-            try:
-                rc_cache[persona] = RedditClient(persona)
-            except Exception:
-                continue
-        rc = rc_cache[persona]
+        url = f"https://www.reddit.com/comments/{post_id}/_/{comment_id}.json?limit=50"
+        req = urllib.request.Request(url, headers={"User-Agent": "RedditBot/1.0"})
 
         try:
-            data = rc.get_post_comments(post_id)
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                data = json.loads(resp.read())
         except Exception as e:
-            print(f"  [WARN] Could not fetch comments for post {post_id}: {e}", file=sys.stderr)
+            print(f"  [WARN] Could not fetch {url}: {e}", file=sys.stderr)
+            _time.sleep(0.5)
             continue
 
-        # Walk the comment tree looking for replies to our comment
-        def _find_replies(comments_list, target_name):
-            """Recursively search for comments whose parent_id matches target_name."""
-            found = []
-            if not isinstance(comments_list, list):
-                return found
-            for item in comments_list:
-                c = item.get("data", item) if isinstance(item, dict) else {}
-                if c.get("parent_id") == target_name:
-                    found.append({
-                        "reply_name": c.get("name", ""),
-                        "reply_id": c.get("id", ""),
-                        "author": c.get("author", "?"),
-                        "body": (c.get("body") or "")[:300],
-                        "score": c.get("score", 0),
-                        "created_utc": c.get("created_utc"),
-                        "permalink": c.get("permalink", ""),
+        # Second listing contains our comment and its replies
+        if not isinstance(data, list) or len(data) < 2:
+            _time.sleep(0.5)
+            continue
+
+        tree = data[1].get("data", {}).get("children", [])
+        for node in tree:
+            d = node.get("data", {})
+            replies_data = d.get("replies")
+            if not isinstance(replies_data, dict):
+                continue
+            for child in replies_data.get("data", {}).get("children", []):
+                cd = child.get("data", {})
+                author = cd.get("author", "")
+                if author and author not in our_usernames and author != "AutoModerator":
+                    replies_found.append({
+                        "persona": persona,
+                        "post_id": post_id,
+                        "subreddit": cd.get("subreddit", entry.get("subreddit", "")),
+                        "our_comment": entry.get("comment_name", ""),
+                        "our_text_preview": entry.get("text_preview", ""),
+                        "reply_name": cd.get("name", ""),
+                        "reply_id": cd.get("id", ""),
+                        "reply_author": author,
+                        "reply_body": (cd.get("body") or "")[:300],
+                        "reply_score": cd.get("score", 0),
+                        "reply_permalink": cd.get("permalink", ""),
                     })
-                # Check nested replies
-                replies_data = c.get("replies")
-                if isinstance(replies_data, dict):
-                    children = replies_data.get("data", {}).get("children", [])
-                    found.extend(_find_replies(children, target_name))
-                elif isinstance(replies_data, list):
-                    found.extend(_find_replies(replies_data, target_name))
-            return found
 
-        # The comments_listing is typically the second element of a two-element list
-        comment_children = []
-        if isinstance(data, list) and len(data) >= 2:
-            comment_children = data[1].get("data", {}).get("children", [])
-        elif isinstance(data, dict):
-            comment_children = data.get("comments_listing", {}).get("data", {}).get("children", [])
-            if not comment_children:
-                # Flat list fallback
-                comment_children = data.get("children", [])
-
-        found = _find_replies(comment_children, our_comment_name)
-        if found:
-            replies_found.append({
-                "persona": persona,
-                "post_id": post_id,
-                "subreddit": entry.get("subreddit", ""),
-                "our_comment": our_comment_name,
-                "our_text_preview": entry.get("text_preview", ""),
-                "replies": found,
-            })
+        _time.sleep(0.5)  # Rate limit
 
     output = {
         "replies": replies_found,
