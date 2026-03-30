@@ -132,15 +132,20 @@ class RedditClient:
         if connect:
             from composio import Composio
 
-            self._composio = Composio(api_key=API_KEY)
+            # Re-read env at connection time (env may be set after module import)
+            api_key = os.environ.get("COMPOSIO_API_KEY", "") or API_KEY
+            if not api_key:
+                raise RuntimeError("COMPOSIO_API_KEY not set. Export it or pass --env COMPOSIO_API_KEY=xxx")
+            self._composio = Composio(api_key=api_key)
 
     def _execute(self, tool_slug: str, arguments: dict) -> dict:
         """Execute a Composio Reddit tool and return the result."""
         if self._composio is None:
             raise RuntimeError("This RedditClient instance was initialized without API connectivity.")
+        user_id = os.environ.get("COMPOSIO_USER_ID", "") or USER_ID
         result = self._composio.tools.execute(
             tool_slug,
-            user_id=USER_ID,
+            user_id=user_id,
             connected_account_id=self.account_id,
             version=TOOLKIT_VERSION,
             arguments=arguments,

@@ -80,16 +80,41 @@ def _ensure_composio():
     except ImportError:
         print("Installing composio...", file=sys.stderr)
         subprocess.check_call(
-            [sys.executable, "-m", "pip", "install", "composio==0.11.3"],
+            [sys.executable, "-m", "pip", "install", "--quiet", "composio"],
             stdout=sys.stderr,
             stderr=sys.stderr,
+            timeout=120,
         )
+
+
+def _inject_env():
+    """Set env vars from CLI --env flags or hardcoded fallbacks for CCR.
+
+    Usage: python scripts/run_engagement.py --env COMPOSIO_API_KEY=xxx scan
+    """
+    to_remove = []
+    for i, arg in enumerate(sys.argv):
+        if arg == "--env" and i + 1 < len(sys.argv):
+            key, _, val = sys.argv[i + 1].partition("=")
+            if key and val:
+                os.environ[key] = val
+            to_remove.extend([i, i + 1])
+    for idx in sorted(to_remove, reverse=True):
+        sys.argv.pop(idx)
 
 
 def _send_slack_dm(message: str) -> dict:
     """Send a Slack DM using urllib (no extra deps)."""
+    # Re-read env at call time (env may be set after module import)
+    token = os.environ.get("SLACK_BOT_TOKEN", "") or SLACK_BOT_TOKEN
+    channel = os.environ.get("SLACK_DM_CHANNEL", "") or SLACK_DM_CHANNEL
+
+    if not token:
+        print("SLACK_BOT_TOKEN not set, skipping notification", file=sys.stderr)
+        return {"ok": False, "error": "no_token"}
+
     payload = json.dumps({
-        "channel": SLACK_DM_CHANNEL,
+        "channel": channel,
         "text": message,
     }).encode("utf-8")
 
@@ -98,7 +123,7 @@ def _send_slack_dm(message: str) -> dict:
         data=payload,
         headers={
             "Content-Type": "application/json; charset=utf-8",
-            "Authorization": f"Bearer {SLACK_BOT_TOKEN}",
+            "Authorization": f"Bearer {token}",
         },
         method="POST",
     )
@@ -402,6 +427,8 @@ def _usage():
 
 
 def main():
+    _inject_env()
+
     if len(sys.argv) < 2:
         _usage()
         sys.exit(1)
