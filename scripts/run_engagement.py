@@ -40,7 +40,15 @@ PERSONA_TARGETS = {
     "admin": {"salesforce", "salesforceadmin", "salesforcecertified", "crm"},
     "dev": {"salesforcedeveloper", "salesforce"},
     "architect": {"salesforce_architects", "salesforce", "salesforcedeveloper", "sysadmin", "consulting"},
-    "critic": {"crm", "salesforce", "sysadmin", "saas", "consulting"},
+    "critic": {"salesforce", "salesforcedeveloper", "crm", "sysadmin", "saas", "consulting"},
+}
+
+# Preferred subs — scanner picks from these FIRST before fallback subs
+PERSONA_PREFERRED_SUBS = {
+    "admin": {"salesforce", "salesforceadmin"},
+    "dev": {"salesforcedeveloper", "salesforce"},
+    "architect": {"salesforce", "salesforce_architects", "salesforcedeveloper"},
+    "critic": {"salesforce", "salesforcedeveloper"},
 }
 
 # Personas that prefer higher-comment threads
@@ -186,6 +194,12 @@ def cmd_scan():
             pool = ideal if ideal else fallback if fallback else candidates
         else:
             pool = candidates
+
+        # Prefer posts in the persona's preferred subs (r/salesforce etc.)
+        preferred = PERSONA_PREFERRED_SUBS.get(persona, set())
+        preferred_pool = [p for p in pool if p["subreddit"].lower() in preferred]
+        if preferred_pool:
+            pool = preferred_pool
 
         # Pick the highest engagement_score post from the pool
         pool.sort(key=lambda x: x.get("engagement_score", 0), reverse=True)

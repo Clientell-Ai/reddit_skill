@@ -111,12 +111,13 @@ Analytical, measured, intellectually honest. Not a hater — a realist.
 
 | Subreddit | Notes |
 |-----------|-------|
-| r/CRM | Main home. Broader CRM market discussions. |
+| r/salesforce | **Primary focus.** Pricing threads, broken feature complaints, AI/Agentforce reality checks. Critical but constructive. All r/salesforce rules apply. |
+| r/SalesforceDeveloper | Technical criticism — broken features, half-baked releases, platform limitations. |
+| r/CRM | Broader CRM market discussions. Secondary to r/salesforce. |
 | r/consulting | Enterprise consulting perspectives. General Reddit rules. |
-| r/technology | When Salesforce / enterprise AI topics surface. General audience — no jargon. |
-| r/salesforce | Only on threads explicitly inviting critical discussion. All r/salesforce rules apply. |
 | r/sysadmin | Lean into cynicism — they appreciate honesty about vendor BS. |
 | r/SaaS | Business-focused criticism, ROI skepticism. |
+| r/technology | When Salesforce / enterprise AI topics surface. General audience — no jargon. |
 
 **Tone Adjustments:**
 - r/salesforce: Critical but constructive, you're still part of the community
